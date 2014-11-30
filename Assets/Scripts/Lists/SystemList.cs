@@ -11,7 +11,7 @@ public class SystemList : MonoBehaviour {
 
 	private StarSystem starSystem; 
 
-	void Awake()
+	public void crateSystems()
 	{
 		starSystems = new string[numStarSystems];
 		starSystems [0] = "Home";
