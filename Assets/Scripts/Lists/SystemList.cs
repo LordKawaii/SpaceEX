@@ -1,24 +1,36 @@
 ﻿using UnityEngine;
-using UnityEditor;
+//using UnityEditor;
 using System.Collections;
 
 public class SystemList : MonoBehaviour {
 
 	public GameObject planet;
 
-	private string[] starSystems;
+	private StarSystem[] starSystems;
 	private int numStarSystems = 2;
 
 	private StarSystem starSystem; 
 
-	public void crateSystems()
+	public void CrateSystemList()
 	{
-		starSystems = new string[numStarSystems];
-		starSystems [0] = "Home";
-		starSystems [1] = "Rec";
+		starSystems = new StarSystem[numStarSystems];
+
+        //Creating home System
+        starSystems[0] = new StarSystem();
+        starSystems[0].name = "Home";
+        starSystems[0].id = 0;
+        starSystems[0].planets.AddFirst(createPlanet("Earth", 1.0f, 0.0f, 0.0f));
+        starSystems[0].planets.AddFirst(createPlanet("Moon", 0.4f, 3.0f, 3.0f));
+
+        //Creating Rec System
+        starSystems[1] = new StarSystem();
+        starSystems[1].name = "Rec";
+        starSystems[1].id = 1;
+        starSystems[1].planets.AddFirst(createPlanet("Rilec", 1.5f, 0.0f, 0.0f));
+        starSystems[1].planets.AddFirst(createPlanet("Risa", 0.5f, 4.0f, -2.0f));
 	}
 
-	public string[] GetStarSystems()
+	public StarSystem[] GetStarSystems()
 	{
 		return starSystems;
 	}
@@ -30,50 +42,31 @@ public class SystemList : MonoBehaviour {
 
 	public void CreateSystems(int systemID)
 	{
-		//Creating home System
-		starSystem = new StarSystem();
 
-
-		switch (systemID) {
-		case 0:
-			starSystem.name = "Sol";
-			starSystem.id = 0;
-
-			//Adding planets to home 
-			GameObject home1 = Instantiate(planet) as GameObject;
-			starSystem.planets.AddFirst (createPlanet(home1, "Earth", 1.0f, 0.0f, 0.0f));
-			GameObject home2 = Instantiate(planet) as GameObject;
-			starSystem.planets.AddFirst (createPlanet(home2, "Moon", 0.4f, 3.0f, 3.0f));
-
-			break;
-		case 1:
-			starSystem.name = "Rec";
-			starSystem.id = 1;
-
-			//Adding planets to Rec 
-			GameObject rec1 = Instantiate(planet) as GameObject;
-			starSystem.planets.AddFirst (createPlanet(rec1, "Rilec", 1.5f, 0.0f, 0.0f));
-
-			GameObject rec2 = Instantiate(planet) as GameObject;
-			starSystem.planets.AddFirst (createPlanet(rec2, "Risa", 0.5f, 4.0f, -2.0f));
-
-			break;
-		}
+        foreach (Planet systemPlanet in starSystems[systemID].planets)
+        {
+            
+            Instantiate(planet);
+            planet.name = systemPlanet.name;
+            planet.GetComponent<PlanetController>().setPlanetName(systemPlanet.name);
+            planet.GetComponent<PlanetController>().planetPos = systemPlanet.position;
+            planet.GetComponent<PlanetController>().planetScale = systemPlanet.scale;
+        }
 
 	}
 
-	GameObject createPlanet(GameObject planet, string name, float scale, float x, float z)
+	Planet createPlanet(string name, float scale, float x, float z)
 	{
 		const int NORMAL_SCALE = 5;
-		planet.name = name;
-	
+
+        Planet newPlanet = new Planet();
+
 		//Set PlanetController
-		PlanetController planetCtrl = planet.GetComponent<PlanetController>();
-		planetCtrl.planetName = name;
-		planetCtrl.planetPos =  new Vector3(x, -4.0f, z);
-		planetCtrl.planetScale = new Vector3(scale * NORMAL_SCALE, scale * NORMAL_SCALE, scale * NORMAL_SCALE);
-	
-		return planet;
+        newPlanet.name = name;
+        newPlanet.position = new Vector3(x, -4.0f, z);
+        newPlanet.scale = new Vector3(scale * NORMAL_SCALE, scale * NORMAL_SCALE, scale * NORMAL_SCALE);
+
+        return newPlanet;
 
 	}
 

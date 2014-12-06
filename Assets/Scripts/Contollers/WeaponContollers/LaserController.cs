@@ -5,6 +5,7 @@ public class LaserController : MonoBehaviour {
 
     public float weaponVelocity;
     public int instanceID;
+    public float damage;
 
 	// Use this for initialization
 	void Start () {

@@ -15,8 +15,9 @@ public class WeaponList : MonoBehaviour {
             case 1:
                 newWeapon.weaponName = "Light Laser";
                 newWeapon.description = "A low damage partical weapon";
-                newWeapon.damage = 2f;
+                newWeapon.damage = 10f;
                 newWeapon.projectile = weapon1Projectile;
+                newWeapon.projectileSpeed = 5;
                 newWeapon.type = 1;
                 newWeapon.fireRate = 1;
 
